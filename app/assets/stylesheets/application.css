@@ -13,3 +13,27 @@
  *= require_tree .
  *= require_self
  */
+
+/*グローバルなフォント設定と背景*/
+body {
+font-family: 'Inter', sans-serif;
+background-color: #f0f4f8; 
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+}
+/* アプリケーションコンテナ - モバイル画面をシミュレート */
+.app-container {
+max-width: 420px;
+width: 90%;
+padding: 2rem;
+background-color: #ffffff;
+border-radius: 1.5rem;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.block,"class=""block ..."""
+.text-sm,"class=""... text-sm ..."""
+.font-medium,"class=""... font-medium ..."""
+.mb-1,"class=""... mb-1 ..."""
