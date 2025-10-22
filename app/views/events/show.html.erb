@@ -1,0 +1,9 @@
+<div class="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-md">
+  <h1 class="text-3xl font-bold mb-4 text-indigo-700"><%= @event.title %></h1>
+  <p class="text-gray-600 mb-2"><strong>日付:</strong> <%= @event.date %></p>
+  <p class="text-gray-600 mb-2"><strong>時間:</strong> <%= @event.time %></p>
+  <p class="text-gray-600 mb-2"><strong>場所:</strong> <%= @event.location %></p>
+  <p class="text-gray-600 mb-6"><strong>詳細:</strong> <%= @event.description %></p>
+
+  <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:underline" %>
+</div>

@@ -1,0 +1,22 @@
+<div class="max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">お知らせ作成</h2>
+
+  <%= form_with model: @notice, local: true, class: "space-y-5" do |f| %>
+    <div>
+      <%= f.label :title, "タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :title, class: "w-full border border-gray-300 rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <div>
+      <%= f.label :content, "内容", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_area :content, rows: 4, class: "w-full border border-gray-300 rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <div class="flex items-center">
+      <%= f.check_box :pinned, class: "mr-2" %>
+      <%= f.label :pinned, "重要なお知らせとして固定する", class: "text-sm text-gray-700" %>
+    </div>
+
+    <%= f.submit "作成する", class: "w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition" %>
+  <% end %>
+</div>
