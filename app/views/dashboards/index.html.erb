@@ -1,0 +1,61 @@
+
+<!-- app/views/dashboards/index.html.erb -->
+<div class="min-h-screen bg-gray-50">
+  <header class="bg-white shadow-md sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-extrabold text-indigo-600 flex items-center">
+        <i data-lucide="zap" class="w-6 h-6 mr-2"></i>
+        Team Connector
+      </h1>
+      <%= link_to edit_user_registration_path, class: "text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full bg-gray-100" do %>
+        <i data-lucide="user" class="w-6 h-6"></i>
+      <% end %>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    <h2 class="text-3xl font-bold text-gray-900 mb-6">ダッシュボード</h2>
+
+    <!-- カレンダー（仮） -->
+    <section class="mb-8 p-4 bg-white rounded-xl shadow-lg border border-gray-200">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+        <i data-lucide="calendar" class="w-5 h-5 mr-2 text-indigo-600"></i>
+        今月の予定
+      </h3>
+
+      <% if @events.present? %>
+        <ul class="divide-y divide-gray-200">
+          <% @events.each do |event| %>
+            <li class="py-3">
+              <strong><%= event.title %></strong>
+              <span class="text-sm text-gray-500">
+                <%= event.date.strftime("%-m/%-d (%a)") %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500">今月の予定はありません。</p>
+      <% end %>
+    </section>
+
+    <!-- お知らせ -->
+    <section class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+        <i data-lucide="bell" class="w-5 h-5 mr-2 text-indigo-600"></i>
+        お知らせ
+      </h3>
+
+      <% @notices.each do |notice| %>
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-3 border border-gray-200">
+          <h4 class="font-semibold text-gray-800"><%= notice.title %></h4>
+          <p class="text-sm text-gray-600 mb-2"><%= truncate(notice.content, length: 100) %></p>
+          <p class="text-xs text-gray-400"><%= l(notice.created_at, format: :short) %></p>
+          <%= link_to "詳細を見る", notice_path(notice), class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
+        </div>
+      <% end %>
+    </section>
+  </main>
+</div>
+
+<%= javascript_include_tag "dashboard", "data-turbo-track": "reload" %>
