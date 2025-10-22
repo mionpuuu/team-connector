@@ -43,10 +43,11 @@
         <ul class="divide-y divide-gray-200">
           <% @events.each do |event| %>
             <li class="py-3">
-              <strong><%= event.title %></strong>
-              <span class="text-sm text-gray-500">
-                <%= event.date.strftime("%-m/%-d (%a)") %>
-              </span>
+              <% wdays = ['日', '月', '火', '水', '木', '金', '土'] %>
+              <% wday = wdays[event.date.wday] %>
+                <p class="font-semibold text-gray-800">
+               <%= link_to event.title, event_path(event) %> <%= event.date.strftime("%-m/%-d") %>（<%= wday %>）
+              </p>
             </li>
           <% end %>
         </ul>
@@ -66,7 +67,8 @@
         <div class="bg-white p-4 rounded-lg shadow-sm mb-3 border border-gray-200">
           <h4 class="font-semibold text-gray-800"><%= notice.title %></h4>
           <p class="text-sm text-gray-600 mb-2"><%= truncate(notice.content, length: 100) %></p>
-          <p class="text-xs text-gray-400"><%= l(notice.created_at, format: :short) %></p>
+          <p class="text-xs text-gray-400">  <%= notice.created_at.strftime("%Y年%-m月%-d日（#{['日','月','火','水','木','金','土'][notice.created_at.wday]}）") %>
+</p>
           <%= link_to "詳細を見る", notice_path(notice), class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
         </div>
       <% end %>
