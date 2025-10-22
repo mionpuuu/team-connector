@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :username, presence: true
 
-  # has_many :events
+  has_many :events, dependent: :destroy
+  has_many :notices
   # has_many :attendances
-  # has_many :notices
 end
