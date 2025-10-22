@@ -1,0 +1,11 @@
+<div class="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-md">
+  <h1 class="text-3xl font-bold mb-4 text-yellow-600"><%= @notice.title %></h1>
+  <p class="text-gray-600 mb-6 whitespace-pre-line"><%= @notice.content %></p>
+  <% if @notice.pinned? %>
+    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-semibold rounded-full">重要</span>
+  <% end %>
+
+  <div class="mt-6">
+    <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:underline" %>
+  </div>
+</div>

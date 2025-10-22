@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_21_090709) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_22_020137) do
   create_table "events", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.date "date", null: false
@@ -22,6 +22,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_21_090709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "notices", charset: "utf8mb3", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "content", null: false
+    t.boolean "importance", default: false
+    t.boolean "pinned", default: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notices_on_user_id"
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
@@ -38,4 +49,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_21_090709) do
   end
 
   add_foreign_key "events", "users"
+  add_foreign_key "notices", "users"
 end

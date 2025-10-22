@@ -1,0 +1,18 @@
+<div class="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-md">
+  <h1 class="text-3xl font-bold mb-4 text-indigo-700"><%= @event.title %></h1>
+  <p><strong>日付:</strong>
+  <%= @event.date.strftime("%Y年%-m月%-d日（#{['日','月','火','水','木','金','土'][@event.date.wday]}）") %>
+</p>
+
+<% if @event.time.present? %>
+  <p><strong>時間:</strong>
+    <%= @event.time.strftime("%H:%M") %>
+  </p>
+<% end %>
+
+<p><strong>場所:</strong> <%= @event.location %></p>
+<p><strong>詳細:</strong> <%= @event.description %></p>
+
+<%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:underline" %>
+
+</div>

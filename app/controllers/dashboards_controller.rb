@@ -1,6 +1,6 @@
 class DashboardsController < ApplicationController
   def index
-    @events = Event.order(date: :asc)
-    @notices = Notice.order(date: :desc)
+    @events = Event.all
+    @notices = Notice.order(created_at: :desc).limit(5)
   end
 end
