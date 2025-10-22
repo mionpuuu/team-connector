@@ -24,6 +24,13 @@
       class: "bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" %>
 </div>
 
+  <div class="flex justify-end space-x-3 mb-8">
+      <%= link_to "📅 イベント一覧を見る", events_path,
+        class: "text-indigo-600 font-semibold hover:underline" %>
+      <%= link_to "📢 お知らせ一覧を見る", notices_path,
+        class: "text-yellow-600 font-semibold hover:underline" %>
+  </div>
+
 
     <!-- カレンダー（仮） -->
     <section class="mb-8 p-4 bg-white rounded-xl shadow-lg border border-gray-200">

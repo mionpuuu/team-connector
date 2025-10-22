@@ -1,9 +1,15 @@
 class NoticesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
+  def index
+    @notices = Notice.all.order(created_at: :desc)
+  end
+
   def new
     @notice = Notice.new
   end
 
   def create
+     @notice = current_user.notices.build(notice_params)
     if @notice.save
       redirect_to root_path, notice: 'お知らせを作成しました！'
     else

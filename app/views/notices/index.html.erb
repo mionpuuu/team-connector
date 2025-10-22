@@ -1,0 +1,21 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md">
+  <h1 class="text-2xl font-bold text-yellow-600 mb-6 text-center">お知らせ一覧</h1>
+
+  <% if @notices.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @notices.each do |notice| %>
+        <li class="py-4">
+          <%= link_to notice.title, notice_path(notice),
+              class: "text-lg font-semibold text-yellow-600 hover:underline" %>
+          <p class="text-sm text-gray-600"><%= l(notice.created_at, format: :short) %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-center text-gray-500">お知らせはまだありません。</p>
+  <% end %>
+
+  <div class="mt-6 text-center">
+    <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:underline" %>
+  </div>
+</div>

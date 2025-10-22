@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
   def index
-    @events = Event.order(date: :asc)
+    @events = Event.all.order(date: :asc)
   end
 
   def new
