@@ -58,23 +58,24 @@
     </div>
 <% end %>
 
-<!-- Deviseのヘルパーリンク群 -->
 <footer class="mt-8 text-center space-y-3">
-    <%= render "devise/shared/links" %>
-    <%#
-        通常、devise/shared/_linksパーシャルが以下のリンクを提供します。
-        もしパーシャルを使わない場合は、以下のように直接記述します。
-    %>
-    <% if devise_mapping.registerable? && controller_name != 'registrations' %>
-        <p class="text-sm">
-            <%= link_to "アカウントをお持ちでない方はこちら", new_user_registration_path, class: "font-medium text-indigo-600 hover:text-indigo-500 transition duration-150" %>
-        </p>
-    <% end %>
-    <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-        <p class="text-sm">
-            <%= link_to "パスワードをお忘れですか？", new_user_password_path, class: "font-medium text-gray-500 hover:text-gray-700 transition duration-150" %>
-        </p>
-    <% end %>
+  <%# サインアップ画面に遷移するリンク %>
+  <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <p class="text-sm">
+      <%= link_to "アカウントをお持ちでない方はこちら", new_user_registration_path,
+          class: "font-medium text-indigo-600 hover:text-indigo-500 transition duration-150" %>
+    </p>
+  <% end %>
+
+  <%# パスワード再設定リンク %>
+  <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+    <p class="text-sm">
+      <%= link_to "パスワードをお忘れですか？", new_user_password_path,
+          class: "font-medium text-gray-500 hover:text-gray-700 transition duration-150" %>
+    </p>
+  <% end %>
+</footer>
+
 </footer>
 
 

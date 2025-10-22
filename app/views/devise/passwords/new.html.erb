@@ -1,16 +1,52 @@
-<h2>Forgot your password?</h2>
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-16">
+  <div class="bg-white p-10 rounded-xl shadow-lg w-full max-w-md border border-gray-200">
+    <!-- ヘッダー -->
+    <header class="text-center mb-8">
+      <div class="w-12 h-12 mx-auto bg-indigo-600 rounded-full flex items-center justify-center mb-3 shadow-lg">
+        <!-- 稲妻アイコン -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-extrabold text-gray-900">Team Connector</h1>
+      <p class="text-sm text-gray-500 mt-1">「つなぐことで、チームをもっとスムーズに。」</p>
+    </header>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <!-- メインフォーム -->
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name),
+                 html: { method: :post, class: "space-y-6" }) do |f| %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <h2 class="text-xl font-bold text-gray-800 text-center mb-4">パスワード再設定</h2>
+
+      <p class="text-sm text-gray-600 mb-4 text-center">
+        ご登録のメールアドレスを入力してください。<br>
+        パスワード再設定用のリンクをお送りします。
+      </p>
+
+      <div>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.email_field :email,
+              autofocus: true,
+              autocomplete: "email",
+              required: true,
+              class: "w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150",
+              placeholder: "example@team.com" %>
+      </div>
+
+      <div class="actions pt-4">
+        <%= f.submit "再設定メールを送信",
+              class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 cursor-pointer" %>
+      </div>
+    <% end %>
+
+    <!-- フッターリンク -->
+    <footer class="mt-8 text-center space-y-3">
+      <p class="text-sm">
+        <%= link_to "← ログイン画面に戻る", new_user_session_path,
+            class: "font-medium text-indigo-600 hover:text-indigo-500 transition duration-150" %>
+      </p>
+    </footer>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
