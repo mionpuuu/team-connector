@@ -22,6 +22,26 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def edit
+    @event = Event.find(params[:id])
+  end
+
+  def update
+    @event = Event.find(params[:id])
+    if @event.update(event_params)
+      redirect_to root_path, notice: 'イベントを更新しました'
+    else
+      flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+    redirect_to root_path, notice: 'イベントを削除しました'
+  end
+
   private
 
   def event_params
