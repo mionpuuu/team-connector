@@ -85,19 +85,20 @@
   <% if user_signed_in? %>
     <%= form_with(model: [@event, Comment.new], local: true, class: "flex space-x-2 mb-4") do |f| %>
       <%= f.text_field :content,
-          placeholder: "コメントを入力（任意）",
+          placeholder: "コメント（任意）",
           class: "border border-gray-300 rounded-lg px-3 py-2 w-64 focus:ring-indigo-500 focus:border-indigo-500" %>
       <%= f.submit "送信",
           class: "bg-indigo-500 text-white px-4 py-2 rounded-lg bg-indigo-600 transition" %>
     <% end %>
   <% end %>
 
-  <% if @event.comments.any? %>
+  <% if @comments.any? %>
     <ul class="space-y-2">
-      <% @event.comments.includes(:user).each do |comment| %>
+      <% @comments.each do |comment| %>
         <li>
           <span class="font-medium"><%= comment.user.username %>：</span>
           <%= comment.content %>
+          <span class="text-gray-400 text-xs ml-2">（<%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>）</span>
         </li>
       <% end %>
     </ul>
