@@ -1,0 +1,29 @@
+<div class="max-w-3xl mx-auto mt-10">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">試合アーカイブ</h1>
+
+  <% if @events_by_month.present? %>
+    <% @events_by_month.each do |month, events| %>
+      <div class="mb-6">
+        <h2 class="text-lg font-semibold text-indigo-700 border-b pb-1 mb-2"><%= month %></h2>
+        <ul class="space-y-2">
+          <% events.each do |event| %>
+            <li class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+              <strong><%= event.title %></strong><br>
+              <span class="text-sm text-gray-500">
+                <%= event.date.strftime("%Y/%m/%d") %> ｜ <%= event.location %>
+              </span>
+              <%= link_to "詳細", event_path(event),
+                  class: "text-indigo-600 hover:underline text-sm ml-2" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-gray-500">過去の試合はまだありません。</p>
+  <% end %>
+
+  <div class="mt-6 text-center">
+    <%= link_to "← 試合一覧に戻る", events_path, class: "text-indigo-600 hover:underline" %>
+  </div>
+</div>

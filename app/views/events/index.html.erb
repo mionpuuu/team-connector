@@ -15,7 +15,29 @@
     <p class="text-center text-gray-500">登録された試合はまだありません。</p>
   <% end %>
 
+  <div class="mt-6 flex justify-center">
+    <%= link_to archive_events_path,
+      class: "flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-indigo-100 rounded-lg border border-gray-300 shadow-sm transition text-sm text-gray-700" do %>
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round"
+          class="w-5 h-5 text-indigo-600 block">
+        <path d="M16 2v4"/>
+        <path d="M21 11.75V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7.25"/>
+        <path d="m22 22-1.875-1.875"/>
+        <path d="M3 10h18"/>
+        <path d="M8 2v4"/>
+        <circle cx="18" cy="18" r="3"/>
+      </svg>
+
+      <span class="font-medium">過去の試合を見る</span>
+    <% end %>
+  </div>
+
   <div class="mt-6 text-center">
     <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:underline" %>
   </div>
 </div>
+
+  

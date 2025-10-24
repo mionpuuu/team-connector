@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create,:attend, :cancel]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :attend, :cancel]
   def index
-    @events = Event.all.order(date: :asc)
+    @events = Event.where("date >= ?", Date.today)
+                 .order(date: :asc)
   end
 
   def new
@@ -14,6 +15,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to root_path, notice: 'イベントを作成しました'
     else
+      puts @event.errors.full_messages 
       flash.now[:alert] = '登録に失敗しました。入力内容を確認してください。'
       render :new, status: :unprocessable_entity
     end
@@ -81,6 +83,13 @@ end
     @event.destroy
     redirect_to root_path, notice: 'イベントを削除しました'
   end
+
+  def archive
+  @events_by_month = Event.where("date < ?", Date.today)
+                          .order(date: :desc)
+                          .group_by { |e| e.date.strftime("%Y年%m月") }
+  end
+
 
   private
 
