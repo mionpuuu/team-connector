@@ -8,15 +8,16 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
 
-    <!-- app/views/layouts/application.html.erb の <head> 内に追加 -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-      document.addEventListener("turbo:load", () => {
+    <!-- Lucide Icons -->
+<script type="text/javascript" src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+  document.addEventListener("turbo:load", () => {
+    if (window.lucide) {
       lucide.createIcons();
-     });
-    </script>
+    }
+  });
+</script>
 
   </head>
 
@@ -24,5 +25,15 @@
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
+
+    <!-- モーダル -->
+    <div data-controller="modal" data-modal-target="modal"
+         class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+      <div class="relative">
+        <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg">
+        <button data-action="click->modal#close"
+                class="absolute top-2 right-2 bg-white rounded-full px-3 py-1 font-bold text-gray-700">×</button>
+      </div>
+    </div>
   </body>
 </html>
