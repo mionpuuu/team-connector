@@ -22,7 +22,30 @@ class NoticesController < ApplicationController
     @notice = Notice.find(params[:id])
   end
 
+
+  def edit
+  @notice = Notice.find(params[:id])
+  end
+
+  def update
+    @notice = Notice.find(params[:id])
+    if @notice.update(notice_params)
+      redirect_to notice_path(@notice), notice: 'お知らせを更新しました！'
+    else
+      flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @notice = Notice.find(params[:id])
+    @notice.destroy
+    redirect_to root_path, notice: 'お知らせを削除しました。'
+  end
+
+  private
+
   def notice_params
-    params.require(:notice).permit(:title, :content, :pinned)
+    params.require(:notice).permit(:title, :content, :pinned, images: [])
   end
 end

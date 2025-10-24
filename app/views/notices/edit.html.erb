@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-md">
-  <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">お知らせ作成</h2>
+ <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">お知らせ編集</h2>
 
   <%= form_with model: @notice, local: true, class: "space-y-5" do |f| %>
     <div>
@@ -23,7 +23,7 @@
       <%= f.label :pinned, "重要なお知らせとして固定する", class: "text-sm text-gray-700" %>
     </div>
 
-    <%= f.submit "作成する", class: "w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition" %>
+    <%= f.submit "更新する", class: "w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition" %>
   <% end %>
 
   <%= link_to "キャンセル", root_path, class: "text-indigo-600 hover:underline text-sm" %>
