@@ -13,6 +13,24 @@
   <p><strong>場所:</strong> <%= @event.location %></p>
   <p class="mb-6"><strong>詳細:</strong> <%= @event.description %></p>
 
+  <% if @event.images.attached? %>
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <% @event.images.each do |img| %>
+        <%= image_tag img.variant(resize_to_limit: [180, 180]),
+            class: "rounded-lg shadow-md cursor-pointer transition hover:scale-105",
+            data: { action: "click->modal#open", modal_target: "image", full_url: url_for(img) } %>
+      <% end %>
+    </div>
+
+    <!-- モーダル本体 -->
+    <div data-modal-target="modal"
+         class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+         data-action="click->modal#close">
+      <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
+    </div>
+  <% end %>
+
+
   <div class="flex justify-center items-center border-t pt-4">
 
     <div class="flex space-x-3">

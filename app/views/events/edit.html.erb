@@ -33,6 +33,20 @@
         <%= f.label :description, "詳細", class: "block text-gray-700 font-semibold mb-1" %>
         <%= f.text_area :description, rows: 4, class: "w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" %>
       </div>
+
+      <div>
+      <%= f.label :images, "試合画像・要項", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.file_field :images, multiple: true, accept: "image/*",
+        class: "block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
+
+     <% if @event.images.attached? %>
+       <div class="grid grid-cols-3 gap-2 mt-3">
+          <% @event.images.each do |img| %>
+         <%= image_tag img.variant(resize_to_limit: [150, 150]), class: "rounded-lg shadow-sm" %>
+        <% end %>
+    </div>
+  <% end %>
+</div>
     </div>
 
     <div class="mt-6 flex justify-between items-center">
