@@ -1,7 +1,27 @@
 <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-6 mt-10">
   <h2 class="text-2xl font-extrabold mb-4 break-words"><%= @notice.title %></h2>
-  <div class="text-gray-700 leading-relaxed whitespace-pre-wrap break-words text-base md:text-lg">
+  <div class="text-gray-700 leading-relaxed whitespace-pre-wrap break-words text-base md:text-lg mb-6">
     <%= simple_format(@notice.content) %>
   </div>
-  <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:text-indigo-800 block mt-6" %>
+
+  <% if @notice.images.attached? %>
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <% @notice.images.each do |img| %>
+        <%= image_tag img.variant(resize_to_limit: [180, 180]), class: "rounded-lg shadow-md" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="flex justify-center items-center border-t pt-4 space-x-3">
+    <%= link_to "編集", edit_notice_path(@notice),
+        class: "bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition" %>
+
+    <%= button_to "削除", notice_path(@notice), method: :delete,
+        data: { turbo_confirm: "本当に削除しますか？" },
+        class: "bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
+  </div>
+
+  <div class="text-center mt-4">
+    <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:text-indigo-800" %>
+  </div>
 </div>
