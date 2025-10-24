@@ -14,6 +14,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to root_path, notice: 'イベントを作成しました'
     else
+      puts @event.errors.full_messages 
       flash.now[:alert] = '登録に失敗しました。入力内容を確認してください。'
       render :new, status: :unprocessable_entity
     end
@@ -81,6 +82,11 @@ end
     @event.destroy
     redirect_to root_path, notice: 'イベントを削除しました'
   end
+
+  def archive
+  @events_by_month = Event.order(date: :desc).group_by { |e| e.date.strftime("%Y年%m月") }
+  end
+
 
   private
 

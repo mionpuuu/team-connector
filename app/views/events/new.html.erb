@@ -32,13 +32,14 @@
   <%= f.file_field :images, multiple: true, accept: "image/*",
         class: "block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
 
-  <% if @event.images.attached? %>
-    <div class="grid grid-cols-3 gap-2 mt-3">
-      <% @event.images.each do |img| %>
-        <%= image_tag img.variant(resize_to_limit: [150, 150]), class: "rounded-lg shadow-sm" %>
-      <% end %>
-    </div>
-  <% end %>
+  <% if @event.persisted? && @event.images.attached? %>
+  <div class="grid grid-cols-3 gap-2 mt-3">
+    <% @event.images.each do |img| %>
+      <%= image_tag img.variant(resize_to_limit: [150, 150]), class: "rounded-lg shadow-sm" %>
+    <% end %>
+  </div>
+<% end %>
+
 </div>
 
     <%= f.submit "登録する", class: "w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 transition" %>
