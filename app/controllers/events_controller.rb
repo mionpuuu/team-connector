@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create,:attend, :cancel]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :attend, :cancel]
   def index
     @events = Event.all.order(date: :asc)
   end
@@ -22,6 +23,44 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def attend
+  @event = Event.find(params[:id])
+  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  attendance.status = :attending
+  attendance.notice = params[:notice]
+  if attendance.save
+    redirect_to @event, notice: "参加登録しました！"
+  else
+    redirect_to @event, alert: "参加登録に失敗しました。"
+  end
+end
+
+def cancel
+  @event = Event.find(params[:id])
+  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  attendance.status = :absent
+  attendance.notice = params[:notice]
+  if attendance.save
+    redirect_to @event, notice: "不参加として登録しました。"
+  else
+    redirect_to @event, alert: "更新に失敗しました。"
+  end
+end
+
+def pending
+  @event = Event.find(params[:id])
+  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  attendance.status = :pending
+  attendance.notice = params[:notice]
+  if attendance.save
+    redirect_to @event, notice: "保留にしました。"
+  else
+    redirect_to @event, alert: "更新に失敗しました。"
+  end
+end
+
+
+
   def edit
     @event = Event.find(params[:id])
   end
@@ -43,6 +82,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
   def event_params
     params.require(:event).permit(:title, :date, :time, :location, :fee, :description, images: [])
