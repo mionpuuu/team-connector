@@ -6,6 +6,7 @@ class DashboardsController < ApplicationController
                    .limit(5)
 
     # お知らせは最新順で5件
+    @pinned_notices = Notice.where(pinned: true).order(created_at: :desc)
     @notices = Notice.order(created_at: :desc).limit(5)
   end
 end
