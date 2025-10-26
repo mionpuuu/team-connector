@@ -70,7 +70,12 @@ end
 
   def update
     @event = Event.find(params[:id])
-    if @event.update(event_params)
+
+    if params[:event][:images]
+    @event.images.attach(params[:event][:images])
+    end
+
+  if @event.update(event_params.except(:images))
       redirect_to root_path, notice: 'イベントを更新しました'
     else
       flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
