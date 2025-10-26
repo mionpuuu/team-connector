@@ -1,74 +1,9 @@
-// Tailwind設定（必要なら保持）
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        'indigo-650': '#4f46e5',
-      },
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-      },
-    },
-  },
-};
-
-// Lucide Icons初期化
-import 'lucide';
-
-// ================================
-// 🎯 ダッシュボード用 JavaScript
-// ================================
-
-// --- デモ用データ（後でRailsの@eventsに置き換え予定） ---
-const dummyEvents = [
-  {
-    id: 1,
-    title: "【10/27(日) 試合】出欠確認のお願い（最終回）",
-    date: "10月27日 (日)",
-    time: "10:00 - 15:00",
-    location: "市民体育館Aコート",
-    type: "試合",
-    status: "未回答",
-    note: "",
-    fee: 1500,
-    description: "今シーズン最後の試合です。9:30集合、昼食は各自持参。",
-  },
-  {
-    id: 2,
-    title: "今週の練習連絡 (木曜日)",
-    date: "10月24日 (木)",
-    time: "19:00 - 21:00",
-    location: "学校体育館B",
-    type: "練習",
-    status: "未回答",
-    note: "",
-    fee: 0,
-    description: "基本練習と戦術確認を行います。参加費は無料。",
-  },
-];
-
-// --- 出欠ステータスの定義 ---
-const statusMap = {
-  0: { text: "未回答", color: "bg-gray-400" },
-  1: { text: "参加", color: "bg-green-500" },
-  2: { text: "欠席", color: "bg-red-500" },
-  3: { text: "遅刻/調整", color: "bg-yellow-500" },
-};
-
-const statusUITextMap = {
-  未回答: 0,
-  参加: 1,
-  欠席: 2,
-  "遅刻/調整": 3,
-};
-
-let currentEvent = null;
 
 // ================================
 // 🪟 モーダル開閉
 // ================================
 
-export function openModal(eventId) {
+window.openModal = function(eventId) { 
   const event = dummyEvents.find((e) => e.id === eventId);
   if (!event) return;
 
@@ -100,7 +35,7 @@ export function openModal(eventId) {
   document.body.classList.add("overflow-hidden");
 }
 
-export function closeModal() {
+window.closeModal = function() {
   document.getElementById("event-modal").classList.add("hidden");
   document.body.classList.remove("overflow-hidden");
   currentEvent = null;
@@ -110,7 +45,7 @@ export function closeModal() {
 // ✅ 出欠登録ボタン処理
 // ================================
 
-export function setStatus(statusValue) {
+window.setStatus = function(statusValue) { 
   document.getElementById("current-attendance-value").value = statusValue;
 
   ["status-0", "status-1", "status-2", "status-3"].forEach((id, i) => {
@@ -124,7 +59,7 @@ export function setStatus(statusValue) {
   });
 }
 
-export function saveAttendance() {
+window.saveAttendance = function() { 
   if (!currentEvent) return;
 
   const newStatusValue = parseInt(
