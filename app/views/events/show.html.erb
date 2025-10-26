@@ -108,6 +108,7 @@
 </div>
 
   <!-- 編集・削除ボタン -->
+  <% if user_signed_in? && @event.user == current_user %>
   <div class="flex justify-center items-center border-t pt-4">
     <div class="flex space-x-3">
       <%= link_to "編集", edit_event_path(@event),
@@ -118,6 +119,8 @@
           class: "bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
     </div>
   </div>
+  <% end %>
+
 
   <div class="flex justify-center items-center mt-4">
       <%= link_to "← 試合一覧に戻る", events_path, class: "text-indigo-600 hover:underline" %>

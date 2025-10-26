@@ -20,6 +20,7 @@
       <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
     </div>
 
+  <% if user_signed_in? && @notice.user == current_user %>
   <div class="flex justify-center items-center border-t pt-4 space-x-3">
     <%= link_to "編集", edit_notice_path(@notice),
         class: "bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition" %>
@@ -28,6 +29,8 @@
         data: { turbo_confirm: "本当に削除しますか？" },
         class: "bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
   </div>
+  <% end %>
+
 
   <div class="text-center mt-4">
     <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:text-indigo-800" %>
