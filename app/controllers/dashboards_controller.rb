@@ -7,6 +7,8 @@ class DashboardsController < ApplicationController
 
     # お知らせは最新順で5件
     @pinned_notices = Notice.where(pinned: true).order(created_at: :desc)
-    @notices = Notice.order(created_at: :desc).limit(5)
+    @notices = Notice.where.not(id: @pinned_notices.pluck(:id))
+                   .order(created_at: :desc)
+
   end
 end

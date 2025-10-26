@@ -1,7 +1,15 @@
 class NoticesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
   def index
-    @notices = Notice.all.order(created_at: :desc)
+    @notices = Notice.where("created_at < ?", Time.current.beginning_of_month)
+                   .order(created_at: :desc)
+  end
+
+  def archive
+      @notices_by_month = Notice
+                        .where("created_at < ?", 3.months.ago.beginning_of_month)
+                        .order(created_at: :desc)
+                        .group_by { |n| n.created_at.strftime("%Y年%m月") }
   end
 
   def new
