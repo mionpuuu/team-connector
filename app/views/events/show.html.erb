@@ -221,7 +221,7 @@
     <!-- 編集・削除ボタン -->
    <% if user_signed_in? && @event.user == current_user %>
   <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-4 sm:mb-6 w-full">
-    <%= link_to edit_event_path(@event),
+    <%= button_to edit_event_path(@event),
         class: "flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] whitespace-nowrap w-full sm:w-auto text-center" do %>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
