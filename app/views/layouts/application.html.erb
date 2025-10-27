@@ -11,21 +11,18 @@
     <%= javascript_importmap_tags %>
 
     <!-- Lucide Icons -->
-<script type="text/javascript" src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-<script>
-  document.addEventListener("turbo:load", () => {
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-  });
-</script>
-
+    <script type="text/javascript" src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      document.addEventListener("turbo:load", () => {
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      });
+    </script>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body class="bg-gray-100">
+    <%= yield %>
 
     <!-- モーダル -->
     <div data-controller="modal" data-modal-target="modal"
