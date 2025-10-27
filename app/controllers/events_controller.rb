@@ -28,37 +28,52 @@ class EventsController < ApplicationController
 
   def attend
   @event = Event.find(params[:id])
-  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  attendance.status = :attending
-  attendance.notice = params[:notice]
-  if attendance.save
-    redirect_to @event, notice: "参加登録しました！"
-  else
-    redirect_to @event, alert: "参加登録に失敗しました。"
+  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  @attendance.status = :attending
+  @attendance.notice = params[:notice]
+  
+  respond_to do |format|
+    if @attendance.save
+      format.html { redirect_to @event, notice: "参加登録しました！" }
+      format.js   # attend.js.erb が呼ばれる
+    else
+      format.html { redirect_to @event, alert: "参加登録に失敗しました。" }
+      format.js   { render js: "alert('参加登録に失敗しました。');" }
+    end
   end
 end
 
 def cancel
   @event = Event.find(params[:id])
-  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  attendance.status = :absent
-  attendance.notice = params[:notice]
-  if attendance.save
-    redirect_to @event, notice: "不参加として登録しました。"
-  else
-    redirect_to @event, alert: "更新に失敗しました。"
+  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  @attendance.status = :absent
+  @attendance.notice = params[:notice]
+  
+  respond_to do |format|
+    if @attendance.save
+      format.html { redirect_to @event, notice: "不参加として登録しました。" }
+      format.js   # cancel.js.erb が呼ばれる
+    else
+      format.html { redirect_to @event, alert: "更新に失敗しました。" }
+      format.js   { render js: "alert('更新に失敗しました。');" }
+    end
   end
 end
 
 def pending
   @event = Event.find(params[:id])
-  attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  attendance.status = :pending
-  attendance.notice = params[:notice]
-  if attendance.save
-    redirect_to @event, notice: "保留にしました。"
-  else
-    redirect_to @event, alert: "更新に失敗しました。"
+  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+  @attendance.status = :pending
+  @attendance.notice = params[:notice]
+  
+  respond_to do |format|
+    if @attendance.save
+      format.html { redirect_to @event, notice: "保留にしました。" }
+      format.js   # pending.js.erb が呼ばれる
+    else
+      format.html { redirect_to @event, alert: "更新に失敗しました。" }
+      format.js   { render js: "alert('更新に失敗しました。');" }
+    end
   end
 end
 

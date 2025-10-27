@@ -1,0 +1,39 @@
+<h3 class="text-lg sm:text-xl font-extrabold text-gray-800 mb-3 sm:mb-4 flex items-center">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+       stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-600">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+  </svg>
+  参加状況
+</h3>
+
+<% if event.attendances.any? %>
+  <ul class="space-y-2">
+    <% event.attendances.includes(:user).each do |attendance| %>
+      <li class="p-3 bg-gray-50 rounded-lg">
+        <span class="font-bold text-gray-800"><%= attendance.user.username %></span>
+        <span class="mx-2">:</span>
+        <% case attendance.status %>
+        <% when "attending" %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
+            ◯ 参加
+          </span>
+        <% when "absent" %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-red-700">
+            × 不参加
+          </span>
+        <% when "pending" %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
+            △ 未定
+          </span>
+        <% else %>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gray-100 text-gray-600">
+            未回答
+          </span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="text-gray-600 text-center py-4">まだ回答がありません。</p>
+<% end %>

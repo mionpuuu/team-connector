@@ -1,1 +1,5 @@
-document.querySelector("body").innerHTML = "<%= j render partial: 'events/attendances', locals: { event: @event } %>";
+const attendanceSection = document.querySelector('#attendance-section');
+if (attendanceSection) {
+  attendanceSection.innerHTML = "<%= j render partial: 'events/attendance_list', locals: { event: @event } %>";
+}
+alert('不参加として登録しました。');
