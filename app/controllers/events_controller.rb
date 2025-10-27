@@ -32,14 +32,12 @@ class EventsController < ApplicationController
   @attendance.status = :attending
   @attendance.notice = params[:notice]
   
-  respond_to do |format|
-    if @attendance.save
-      format.html { redirect_to @event, notice: "参加登録しました！" }
-      format.js   # attend.js.erb が呼ばれる
-    else
-      format.html { redirect_to @event, alert: "参加登録に失敗しました。" }
-      format.js   { render js: "alert('参加登録に失敗しました。');" }
-    end
+  if @attendance.save
+    render json: {
+      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
+    }
+  else
+    render json: { message: '参加登録に失敗しました。' }, status: :unprocessable_entity
   end
 end
 
@@ -49,14 +47,12 @@ def cancel
   @attendance.status = :absent
   @attendance.notice = params[:notice]
   
-  respond_to do |format|
-    if @attendance.save
-      format.html { redirect_to @event, notice: "不参加として登録しました。" }
-      format.js   # cancel.js.erb が呼ばれる
-    else
-      format.html { redirect_to @event, alert: "更新に失敗しました。" }
-      format.js   { render js: "alert('更新に失敗しました。');" }
-    end
+  if @attendance.save
+    render json: {
+      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
+    }
+  else
+    render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
   end
 end
 
@@ -66,14 +62,12 @@ def pending
   @attendance.status = :pending
   @attendance.notice = params[:notice]
   
-  respond_to do |format|
-    if @attendance.save
-      format.html { redirect_to @event, notice: "保留にしました。" }
-      format.js   # pending.js.erb が呼ばれる
-    else
-      format.html { redirect_to @event, alert: "更新に失敗しました。" }
-      format.js   { render js: "alert('更新に失敗しました。');" }
-    end
+  if @attendance.save
+    render json: {
+      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
+    }
+  else
+    render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
   end
 end
 
