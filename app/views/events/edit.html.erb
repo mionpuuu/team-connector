@@ -1,11 +1,87 @@
-<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-8">
-  <h1 class="text-2xl font-bold text-indigo-700 mb-6 text-center">試合情報を編集</h1>
+<div class="min-h-screen bg-gray-100">
+  
+  <!-- ヘッダーエリア -->
+  <header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-indigo-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+      <h1 class="text-2xl font-extrabold text-indigo-600 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor"
+             class="w-7 h-7 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Team Connector
+      </h1>
 
-  <%= form_with(model: @event, local: true) do |f| %>
+      <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full bg-indigo-50" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      <% end %>
+    </div>
+  </header>
+  
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- パンくずナビゲーション -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+      <%= link_to root_path, class: "hover:text-indigo-600 transition flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        ダッシュボード
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <%= link_to events_path, class: "hover:text-indigo-600 transition" do %>
+        試合一覧
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <span class="text-gray-900 font-medium"><%= @event.persisted? ? "編集" : "新規作成" %></span>
+    </div>
+
+    <!-- ページタイトル -->
+    <div class="mb-6">
+      <h2 class="text-3xl font-bold text-gray-900 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-8 h-8 mr-2 text-indigo-600">
+          <% if @event.persisted? %>
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+          <% else %>
+            <path d="M8 2v4"/>
+            <path d="M16 2v4"/>
+            <rect width="18" height="18" x="3" y="4" rx="2"/>
+            <path d="M3 10h18"/>
+            <path d="M12 17v-6"/>
+            <path d="M9 14h6"/>
+          <% end %>
+        </svg>
+        <%= @event.persisted? ? "試合情報の編集" : "試合新規登録" %>
+      </h2>
+    </div>
+
+    <!-- エラーメッセージ -->
     <% if @event.errors.any? %>
-      <div class="mb-4 p-4 bg-red-50 border border-red-300 text-red-700 rounded-lg">
-        <p><strong><%= pluralize(@event.errors.count, "件のエラー") %></strong> が発生しました:</p>
-        <ul class="list-disc list-inside">
+      <div class="mb-6 p-6 bg-red-50 border-l-8 border-red-500 rounded-2xl shadow-xl">
+        <h3 class="text-lg font-bold text-red-700 mb-3 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+          </svg>
+          入力にエラーがあります
+        </h3>
+        <ul class="list-disc list-inside space-y-1 text-sm text-red-600">
           <% @event.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
           <% end %>
@@ -13,51 +89,147 @@
       </div>
     <% end %>
 
-    <div class="space-y-4">
-      <div>
-        <%= f.label :title, "試合タイトル", class: "block text-gray-700 font-semibold mb-1" %>
-        <%= f.text_field :title, class: "w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" %>
-      </div>
+    <!-- フォームセクション -->
+    <section class="p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+      <%= form_with model: @event, local: true, html: { multipart: true }, class: "space-y-6" do |f| %>
+        
+        <!-- タイトル -->
+        <div>
+          <%= f.label :title, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13L2 21.75l.8-2.685a4.5 4.5 0 011.13-1.897l12.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+            </svg>
+            タイトル
+            <span class="text-red-500 ml-1">*</span>
+          <% end %>
+          <%= f.text_field :title, 
+              required: true,
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+              placeholder: "例: ◯◯チームとの練習試合" %>
+        </div>
 
-      <div>
-        <%= f.label :date, "日付", class: "block text-gray-700 font-semibold mb-1" %>
-        <%= f.date_field :date, class: "w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" %>
-      </div>
+        <!-- 日付と時間 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- 日付 -->
+          <div>
+            <%= f.label :date, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+              </svg>
+              日付
+              <span class="text-red-500 ml-1">*</span>
+            <% end %>
+            <%= f.date_field :date,
+                required: true,
+                class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" %>
+          </div>
 
-      <div>
-        <%= f.label :location, "場所", class: "block text-gray-700 font-semibold mb-1" %>
-        <%= f.text_field :location, class: "w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" %>
-      </div>
+          <!-- 時間 -->
+          <div>
+            <%= f.label :time, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              開始時間
+            <% end %>
+            <%= f.time_field :time,
+                class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" %>
+          </div>
+        </div>
 
-      <div>
-        <%= f.label :description, "詳細", class: "block text-gray-700 font-semibold mb-1" %>
-        <%= f.text_area :description, rows: 4, class: "w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" %>
-      </div>
+        <!-- 場所 -->
+        <div>
+          <%= f.label :location, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+            </svg>
+            場所
+          <% end %>
+          <%= f.text_field :location,
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+              placeholder: "例: ◯◯体育館" %>
+        </div>
 
-      <div>
-      <%= f.label :images, "試合画像・要項", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.file_field :images, multiple: true, accept: "image/*",
-        class: "block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
+        <!-- 詳細 -->
+        <div>
+          <%= f.label :description, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+            </svg>
+            詳細・連絡事項
+          <% end %>
+          <%= f.text_area :description, rows: 6,
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-y",
+              placeholder: "持ち物、集合時間、その他連絡事項など" %>
+        </div>
 
-     <% if @event.images.attached? %>
-       <div class="grid grid-cols-3 gap-2 mt-3">
-          <% @event.images.each do |img| %>
-         <%= image_tag img.variant(resize_to_limit: [150, 150]), class: "rounded-lg shadow-sm" %>
+        <!-- 既存の画像 -->
+        <% if @event.persisted? && @event.images.attached? %>
+          <div class="border-2 border-indigo-200 rounded-xl p-4 bg-indigo-50">
+            <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+              </svg>
+              現在の添付画像
+            </h3>
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+              <% @event.images.each do |img| %>
+                <%= image_tag img.variant(resize_to_limit: [150, 150]),
+                    class: "rounded-lg shadow-md w-full h-24 object-cover" %>
+              <% end %>
+            </div>
+            <p class="text-xs text-indigo-700 mt-2">※ 新しい画像をアップロードすると、既存の画像は置き換えられます</p>
+          </div>
         <% end %>
-    </div>
-  <% end %>
-</div>
-    </div>
 
-    <div class="mt-6 flex justify-between items-center">
-      <%= f.submit "更新する", class: "bg-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-700 transition" %>
-      <%= link_to "キャンセル", root_path, class: "text-gray-600 hover:underline" %>
-    </div>
-  <% end %>
+        <!-- 画像アップロード -->
+        <div>
+          <%= f.label :images, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+            </svg>
+            画像の追加・変更（任意）
+          <% end %>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-indigo-400 transition">
+            <%= f.file_field :images, multiple: true, accept: "image/*",
+                class: "block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer" %>
+            <p class="text-xs text-gray-500 mt-2">PNG, JPG, GIF（複数選択可）会場の写真など</p>
+          </div>
+        </div>
 
-  <div class="mt-8 text-center border-t pt-4">
-    <%= button_to "試合を削除する", event_path(@event), method: :delete, 
-        data: { turbo_confirm: "本当に削除しますか？" },
-        class: "bg-red-500 text-white px-5 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
-  </div>
+        <!-- 送信ボタン -->
+        <div class="flex flex-col gap-3 pt-4">
+          <%= f.submit (@event.persisted? ? "内容を更新する" : "試合を登録する"),
+              class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+
+          <% if @event.persisted? %>
+            <%= button_to "この試合を削除する", event_path(@event), method: :delete, 
+                data: { turbo_confirm: "本当にこの試合情報を完全に削除しますか？" },
+                class: "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+          <% end %>
+
+          <%= link_to "キャンセル", (@event.persisted? ? event_path(@event) : events_path),
+              class: "w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 text-center block" %>
+        </div>
+
+      <% end %>
+    </section>
+
+  </main>
 </div>

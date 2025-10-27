@@ -1,86 +1,233 @@
-<div class="min-h-screen bg-gray-50 py-10">
-  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 p-6">
+<div class="min-h-screen bg-gray-100">
+  
+  <!-- ヘッダーエリア -->
+  <header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-indigo-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+      <h1 class="text-2xl font-extrabold text-indigo-600 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor"
+             class="w-7 h-7 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Team Connector
+      </h1>
 
-    <h2 class="text-2xl font-bold text-center text-indigo-600 mb-6">ユーザー情報の編集</h2>
-
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
-                 html: { method: :put, class: "space-y-5" }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
-      <div>
-        <%= f.label :username, "ユーザー名", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.text_field :username, autofocus: true,
-              class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-      </div>
-
-      <div>
-        <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-      </div>
-
-      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-        <p class="text-sm text-gray-500 mb-2">
-          確認待ちのメールアドレス: <%= resource.unconfirmed_email %>
-        </p>
+      <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full bg-indigo-50" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
       <% end %>
+    </div>
+  </header>
+  
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- パンくずナビゲーション -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+      <%= link_to root_path, class: "hover:text-indigo-600 transition flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        ダッシュボード
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <span class="text-gray-900 font-medium">ユーザー設定</span>
+    </div>
 
-      <div>
-        <%= f.label :password, "新しいパスワード（変更しない場合は空欄のまま）", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.password_field :password, autocomplete: "new-password",
-              class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-        <% if @minimum_password_length %>
-          <p class="text-xs text-gray-500 mt-1"><%= @minimum_password_length %>文字以上</p>
-        <% end %>
-      </div>
+    <!-- ページタイトル -->
+    <div class="mb-6">
+      <h2 class="text-3xl font-bold text-gray-900 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-8 h-8 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        ユーザー設定
+      </h2>
+      <p class="text-gray-600 mt-2">アカウント情報の確認・変更ができます</p>
+    </div>
 
-      <div>
-        <%= f.label :password_confirmation, "パスワード（確認）", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password",
-              class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-      </div>
-
-      <div>
-        <%= f.label :current_password, "現在のパスワード（変更確認のため）", class: "block text-gray-700 font-medium mb-1" %>
-        <%= f.password_field :current_password, autocomplete: "current-password",
-              class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
-      </div>
-
-      <div class="pt-4">
-        <%= f.submit "更新する",
-              class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" %>
+    <!-- エラーメッセージ -->
+    <% if resource.errors.any? %>
+      <div class="mb-6 p-6 bg-red-50 border-l-8 border-red-500 rounded-2xl shadow-xl">
+        <h3 class="text-lg font-bold text-red-700 mb-3 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+          </svg>
+          入力にエラーがあります
+        </h3>
+        <ul class="list-disc list-inside space-y-1 text-sm text-red-600">
+          <% resource.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
 
-    <!-- ログアウトボタン（更新ボタンの下に配置） -->
-    <div class="mt-4">
+    <!-- 基本情報セクション -->
+    <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+      <h3 class="text-xl font-extrabold text-gray-800 mb-5 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+        </svg>
+        基本情報
+      </h3>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
+                   html: { method: :put, class: "space-y-5" }) do |f| %>
+        
+        <!-- ユーザー名 -->
+        <div>
+          <%= f.label :username, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+            ユーザー名
+          <% end %>
+          <%= f.text_field :username, autofocus: true,
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" %>
+        </div>
+
+        <!-- メールアドレス -->
+        <div>
+          <%= f.label :email, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+            メールアドレス
+          <% end %>
+          <%= f.email_field :email, autocomplete: "email",
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" %>
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <p class="text-xs text-amber-600 mt-1">
+              確認待ちのメールアドレス: <%= resource.unconfirmed_email %>
+            </p>
+          <% end %>
+        </div>
+
+        <!-- パスワード変更セクション -->
+        <div class="border-t border-gray-200 pt-5 mt-5">
+          <h4 class="text-sm font-bold text-gray-700 mb-4">パスワード変更（変更しない場合は空欄のまま）</h4>
+          
+          <div class="space-y-4">
+            <!-- 新しいパスワード -->
+            <div>
+              <%= f.label :password, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                </svg>
+                新しいパスワード
+              <% end %>
+              <%= f.password_field :password, autocomplete: "new-password",
+                  class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+                  placeholder: "空欄の場合は変更されません" %>
+              <% if @minimum_password_length %>
+                <p class="text-xs text-gray-500 mt-1">
+                  ※ <%= @minimum_password_length %>文字以上で設定してください
+                </p>
+              <% end %>
+            </div>
+
+            <!-- パスワード確認 -->
+            <div>
+              <%= f.label :password_confirmation, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                新しいパスワード（確認）
+              <% end %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                  class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+                  placeholder: "もう一度入力してください" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- 現在のパスワード -->
+        <div class="border-t border-gray-200 pt-5 mt-5">
+          <%= f.label :current_password, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+            </svg>
+            現在のパスワード
+            <span class="text-red-500 ml-1">*</span>
+          <% end %>
+          <%= f.password_field :current_password, autocomplete: "current-password",
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+              placeholder: "変更を保存するために必要です" %>
+          <p class="text-xs text-gray-500 mt-1">
+            ※ 情報を更新するには現在のパスワードの入力が必要です
+          </p>
+        </div>
+
+        <!-- 更新ボタン -->
+        <div class="pt-4">
+          <%= f.submit "更新する",
+              class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+        </div>
+
+      <% end %>
+    </section>
+
+    <!-- ログアウトボタン -->
+    <div class="mb-6">
       <%= button_to destroy_user_session_path,
           method: :delete,
           data: { turbo_confirm: "ログアウトしますか？" },
-          class: "w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg shadow-sm transition duration-150" do %>
+          class: "w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 border-2 border-gray-300" do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-             stroke-width="2" stroke="currentColor" class="w-4 h-4">
+             stroke-width="2" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
         </svg>
         ログアウト
       <% end %>
     </div>
 
-     <!-- 戻るリンク -->
-    <div class="text-center mt-6">
-      <%= link_to "← ダッシュボードに戻る", root_path,
-          class: "text-sm text-indigo-600 hover:text-indigo-800 font-medium" %>
-    </div>
-
-
-    <div class="mt-8 border-t pt-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-2">アカウント削除</h3>
-      <p class="text-sm text-gray-600 mb-3">退会する場合は、下記ボタンからアカウントを削除できます。</p>
-      <%= button_to "アカウントを削除する", registration_path(resource_name),
-            data: { confirm: "本当に削除しますか？" },
+    <!-- アカウント削除セクション -->
+    <section class="p-6 bg-white rounded-2xl shadow-xl border-t-8 border-red-500">
+      <h3 class="text-xl font-extrabold text-gray-800 mb-3 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-red-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+        </svg>
+        アカウント削除
+      </h3>
+      <p class="text-sm text-gray-600 mb-4">
+        退会する場合は、下記ボタンからアカウントを削除できます。<br>
+        <span class="text-red-600 font-bold">※ この操作は取り消せません</span>
+      </p>
+      <%= button_to registration_path(resource_name),
+            data: { confirm: "本当にアカウントを削除しますか？この操作は取り消せません。" },
             method: :delete,
-            class: "w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" %>
-    </div>
+            class: "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02]" do %>
+        アカウントを削除する
+      <% end %>
+    </section>
 
-    
+  </main>
+</div>

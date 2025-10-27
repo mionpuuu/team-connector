@@ -1,30 +1,186 @@
-<div class="max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-md">
- <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">お知らせ編集</h2>
+<div class="min-h-screen bg-gray-100">
+  
+  <!-- ヘッダーエリア -->
+  <header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-amber-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+      <h1 class="text-2xl font-extrabold text-amber-600 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor"
+             class="w-7 h-7 mr-2 text-amber-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Team Connector
+      </h1>
 
-  <%= form_with model: @notice, local: true, class: "space-y-5" do |f| %>
-    <div>
-      <%= f.label :title, "タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :title, class: "w-full border border-gray-300 rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500" %>
+      <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 hover:text-amber-600 transition duration-150 p-2 rounded-full bg-amber-50" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6 text-amber-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      <% end %>
+    </div>
+  </header>
+  
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- パンくずナビゲーション -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+      <%= link_to root_path, class: "hover:text-amber-600 transition flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        ダッシュボード
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <%= link_to notices_path, class: "hover:text-amber-600 transition" do %>
+        お知らせ一覧
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <span class="text-gray-900 font-medium">編集</span>
     </div>
 
-    <div>
-      <%= f.label :content, "内容", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_area :content, rows: 4, class: "w-full border border-gray-300 rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500" %>
+    <!-- ページタイトル -->
+    <div class="mb-6">
+      <h2 class="text-3xl font-bold text-gray-900 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-8 h-8 mr-2 text-amber-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+        </svg>
+        お知らせ編集
+      </h2>
     </div>
 
-    <div>
-      <%= f.label :images, "画像（任意・複数可）", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.file_field :images, multiple: true, accept: "image/*",
-            class: "block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
-    </div>
+    <!-- フォームセクション -->
+    <section class="p-6 bg-white rounded-2xl shadow-xl border-t-8 border-amber-500">
+      <%= form_with model: @notice, local: true, class: "space-y-6" do |f| %>
+        
+        <!-- タイトル -->
+        <div>
+          <%= f.label :title, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-amber-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13L2 21.75l.8-2.685a4.5 4.5 0 011.13-1.897l12.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+            </svg>
+            タイトル
+            <span class="text-red-500 ml-1">*</span>
+          <% end %>
+          <%= f.text_field :title, 
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition",
+              placeholder: "お知らせのタイトルを入力" %>
+        </div>
 
-    <div class="flex items-center">
-      <%= f.check_box :pinned, class: "mr-2" %>
-      <%= f.label :pinned, "重要なお知らせとして固定する", class: "text-sm text-gray-700" %>
-    </div>
+        <!-- 内容 -->
+        <div>
+          <%= f.label :content, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-amber-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+            </svg>
+            内容
+            <span class="text-red-500 ml-1">*</span>
+          <% end %>
+          <%= f.text_area :content, rows: 8,
+              class: "w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition resize-y",
+              placeholder: "お知らせの内容を入力" %>
+        </div>
 
-    <%= f.submit "更新する", class: "w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition" %>
-  <% end %>
+        <!-- 既存の画像 -->
+        <% if @notice.images.attached? %>
+          <div class="border-2 border-amber-200 rounded-xl p-4 bg-amber-50">
+            <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-amber-600">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+              </svg>
+              現在の添付画像
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <% @notice.images.each do |img| %>
+                <div class="relative group">
+                  <%= image_tag img.variant(resize_to_limit: [200, 200]),
+                      class: "rounded-lg shadow-md w-full h-32 object-cover" %>
+                  <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition rounded-lg flex items-center justify-center">
+                    <span class="text-white text-xs opacity-0 group-hover:opacity-100 transition">クリックで拡大</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <p class="text-xs text-amber-700 mt-2">※ 新しい画像をアップロードすると、既存の画像は置き換えられます</p>
+          </div>
+        <% end %>
 
-  <%= link_to "キャンセル", root_path, class: "text-indigo-600 hover:underline text-sm" %>
+        <!-- 画像アップロード -->
+        <div>
+          <%= f.label :images, class: "block text-sm font-bold text-gray-700 mb-2 flex items-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-1 text-amber-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+            </svg>
+            画像の追加・変更（任意）
+          <% end %>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-amber-400 transition">
+            <%= f.file_field :images, multiple: true, accept: "image/*",
+                class: "block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer" %>
+            <p class="text-xs text-gray-500 mt-2">PNG, JPG, GIF（複数選択可）</p>
+          </div>
+        </div>
+
+        <!-- ピン留めチェックボックス -->
+        <div class="border-2 border-gray-200 rounded-xl p-4 bg-gray-50">
+          <label class="flex items-start cursor-pointer">
+            <%= f.check_box :pinned, class: "mt-1 mr-3 w-5 h-5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" %>
+            <div>
+              <span class="text-sm font-bold text-gray-700 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="w-4 h-4 mr-1 text-amber-600">
+                  <path d="M6 22V2.8a.8.8 0 0 1 1.17-.71l11.38 5.69a.8.8 0 0 1 0 1.44L6 15.5"/>
+                </svg>
+                重要なお知らせとして固定する
+              </span>
+              <p class="text-xs text-gray-600 mt-1">チェックすると、ダッシュボードの上部に常に表示されます</p>
+            </div>
+          </label>
+        </div>
+
+        <!-- 送信ボタン -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-4">
+          <%= f.submit "更新する",
+              class: "flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer flex items-center justify-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+          <% end %>
+
+          <%= link_to notice_path(@notice),
+              class: "flex-1 sm:flex-initial bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 flex items-center justify-center" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            キャンセル
+          <% end %>
+        </div>
+
+      <% end %>
+    </section>
+
+  </main>
 </div>
