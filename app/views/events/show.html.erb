@@ -220,9 +220,9 @@
 
     <!-- 編集・削除ボタン -->
    <% if user_signed_in? && @event.user == current_user %>
-  <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-4 sm:mb-6 w-full">
-    <%= button_to edit_event_path(@event),
-        class: "flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] whitespace-nowrap w-full sm:w-auto text-center" do %>
+  <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+    <%= link_to edit_event_path(@event),
+        class: "flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] min-w-[120px]" do %>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
         <path stroke-linecap="round" stroke-linejoin="round"
@@ -231,9 +231,9 @@
       編集
     <% end %>
 
-    <%= button_to event_path(@event), method: :delete,
-        data: { turbo_confirm: "本当に削除しますか?" },
-        class: "flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] whitespace-nowrap w-full sm:w-auto text-center" do %>
+    <%= link_to event_path(@event),
+        data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか?" },
+        class: "flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] min-w-[120px]" do %>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
         <path stroke-linecap="round" stroke-linejoin="round"
@@ -243,7 +243,6 @@
     <% end %>
   </div>
 <% end %>
-
 
 
     <!-- 戻るリンク -->
