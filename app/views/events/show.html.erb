@@ -140,19 +140,26 @@
         </h3>
         
         <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-          <%= form_with url: attend_event_path(@event), method: :post, remote: true, class: "flex-1 sm:flex-initial" do |f| %>
-            <%= hidden_field_tag :notice, "" %>
-            <%= f.submit "◯ 参加", class: "w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
+          <%= form_with url: attend_event_path(@event), method: :post, remote: true, 
+              data: { turbo: false }, 
+              class: "flex-1 sm:flex-initial" do |f| %>
+              <%= hidden_field_tag :notice, "" %>
+              <%= f.submit "◯ 参加", class: "w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
           <% end %>
 
-          <%= form_with url: pending_event_path(@event), method: :post, remote: true, class: "flex-1 sm:flex-initial" do |f| %>
-            <%= hidden_field_tag :notice, "" %>
-            <%= f.submit "△ 未定", class: "w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
+          <%= form_with url: pending_event_path(@event), method: :post, remote: true, 
+              data: { turbo: false }, 
+              class: "flex-1 sm:flex-initial" do |f| %>
+              <%= hidden_field_tag :notice, "" %>
+              <%= f.submit "△ 未定", class: "w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
           <% end %>
 
-          <%= form_with url: cancel_event_path(@event), method: :post, remote: true, class: "flex-1 sm:flex-initial" do |f| %>
-            <%= hidden_field_tag :notice, "" %>
-            <%= f.submit "× 不参加", class: "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
+<!-- ×不参加ボタン -->
+        <%= form_with url: cancel_event_path(@event), method: :post, remote: true, 
+              data: { turbo: false }, 
+              class: "flex-1 sm:flex-initial" do |f| %>
+             <%= hidden_field_tag :notice, "" %>
+             <%= f.submit "× 不参加", class: "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer text-sm sm:text-base" %>
           <% end %>
         </div>
       </section>
