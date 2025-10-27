@@ -1,125 +1,288 @@
-<div class="max-w-3xl mx-auto p-8 bg-white rounded-2xl shadow-md mt-8" data-controller="modal">
-  <h1 class="text-3xl font-bold mb-4 text-indigo-700"><%= @event.title %></h1>
+<div class="min-h-screen bg-gray-100" data-controller="modal">
+  
+  <!-- ヘッダーエリア -->
+  <header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-indigo-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+      <h1 class="text-2xl font-extrabold text-indigo-600 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor"
+             class="w-7 h-7 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Team Connector
+      </h1>
 
-  <p>
-    <strong>日付:</strong>
-    <%= @event.date.strftime("%Y年%-m月%-d日（#{['日','月','火','水','木','金','土'][@event.date.wday]}）") %>
-  </p>
-
-  <% if @event.time.present? %>
-    <p><strong>時間:</strong> <%= @event.time.strftime("%H:%M") %></p>
-  <% end %>
-
-  <p><strong>場所:</strong> <%= @event.location %></p>
-  <p class="mb-6"><strong>詳細:</strong> <%= @event.description %></p>
-
-  <% if @event.images.attached? %>
-    <div class="grid grid-cols-3 gap-3 mb-6">
-      <% @event.images.each do |img| %>
-        <%= image_tag img.variant(resize_to_limit: [180, 180]),
-            class: "rounded-lg shadow-md cursor-pointer transition hover:scale-105",
-            data: { action: "click->modal#open", modal_target: "image", full_url: url_for(img) } %>
+      <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full bg-indigo-50" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
       <% end %>
     </div>
-
-    <!-- モーダル本体 -->
-    <div data-modal-target="modal"
-         class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-         data-action="click->modal#close">
-      <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
+  </header>
+  
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- パンくずナビゲーション -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+      <%= link_to root_path, class: "hover:text-indigo-600 transition flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        ダッシュボード
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <%= link_to events_path, class: "hover:text-indigo-600 transition" do %>
+        試合一覧
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <span class="text-gray-900 font-medium truncate"><%= truncate(@event.title, length: 20) %></span>
     </div>
-  <% end %>
 
-  <% if user_signed_in? %>
-  <!-- ボタン群 -->
-  <div class="flex justify-center mb-6">
-  <%= form_with url: attend_event_path(@event), method: :post, remote: true, style: "display:inline-block; margin: 0 6px;" do |f| %>
-    <%= hidden_field_tag :notice, "" %>
-    <%= f.submit "◯", style: "background:#22c55e; color:white; padding:12px 24px; border-radius:12px; font-weight:bold;" %>
-  <% end %>
+    <!-- タイトルセクション -->
+    <div class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-4"><%= @event.title %></h2>
+      
+      <div class="space-y-3 text-gray-700">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2 text-indigo-600">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          <span class="font-bold text-indigo-700">
+            <%= @event.date.strftime("%Y年%-m月%-d日（#{['日','月','火','水','木','金','土'][@event.date.wday]}）") %>
+          </span>
+        </div>
 
-  <%= form_with url: cancel_event_path(@event), method: :post, remote: true, style: "display:inline-block; margin: 0 6px;" do |f| %>
-    <%= hidden_field_tag :notice, "" %>
-    <%= f.submit "×", style: "background:#ef4444; color:white; padding:12px 24px; border-radius:12px; font-weight:bold;" %>
-  <% end %>
+        <% if @event.time.present? %>
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="font-medium"><%= @event.time.strftime("%H:%M") %></span>
+          </div>
+        <% end %>
 
-  <%= form_with url: pending_event_path(@event), method: :post, remote: true, style: "display:inline-block; margin: 0 6px;" do |f| %>
-    <%= hidden_field_tag :notice, "" %>
-    <%= f.submit "△", style: "background:#eab308; color:white; padding:12px 24px; border-radius:12px; font-weight:bold;" %>
-  <% end %>
-</div>
-  <% end %>
+        <% if @event.location.present? %>
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2 text-indigo-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+            </svg>
+            <span class="font-medium"><%= @event.location %></span>
+          </div>
+        <% end %>
 
-  <!-- 参加状況 -->
-  <div class="mt-8 border-t pt-4">
-  <h3 class="text-lg font-bold mb-2 text-gray-800">参加状況</h3>
+        <% if @event.description.present? %>
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <p class="text-sm text-gray-600 font-semibold mb-2">詳細</p>
+            <p class="text-gray-700 whitespace-pre-wrap"><%= @event.description %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-  <% if @event.attendances.any? %>
-    <ul class="space-y-1">
-      <% @event.attendances.includes(:user).each do |attendance| %>
-        <li>
-          <span class="font-medium"><%= attendance.user.username %>：</span>
-
-          <% case attendance.status %>
-          <% when "attending" %>
-            <span class="text-green-600 font-semibold">◯</span>
-          <% when "absent" %>
-            <span class="text-red-600 font-semibold">×</span>
-          <% when "pending" %>
-            <span class="text-yellow-500 font-semibold">△</span>
-          <% else %>
-            <span class="text-gray-500">未回答</span>
+    <!-- 画像セクション -->
+    <% if @event.images.attached? %>
+      <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+        <h3 class="text-xl font-extrabold text-gray-800 mb-4 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-600">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+          </svg>
+          画像
+        </h3>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <% @event.images.each do |img| %>
+            <%= image_tag img.variant(resize_to_limit: [300, 300]),
+                class: "rounded-xl shadow-md cursor-pointer transition hover:scale-105 w-full h-48 object-cover",
+                data: { action: "click->modal#open", modal_target: "image", full_url: url_for(img) } %>
           <% end %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500">まだ回答がありません。</p>
-  <% end %>
-</div>
+        </div>
 
-  <!-- コメント欄 -->
-<div class="mt-8 border-t pt-4">
-  <h3 class="text-lg font-bold mb-2 text-gray-800">コメント</h3>
-
-  <% if user_signed_in? %>
-    <%= form_with(model: [@event, Comment.new], local: true, class: "flex space-x-2 mb-4") do |f| %>
-      <%= f.text_field :content,
-          placeholder: "コメント（任意）",
-          class: "border border-gray-300 rounded-lg px-3 py-2 w-64 focus:ring-indigo-500 focus:border-indigo-500" %>
-      <%= f.submit "送信",
-          class: "bg-indigo-500 text-white px-4 py-2 rounded-lg bg-indigo-600 transition" %>
+        <!-- モーダル本体 -->
+        <div data-modal-target="modal"
+             class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+             data-action="click->modal#close">
+          <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
+        </div>
+      </section>
     <% end %>
-  <% end %>
 
-  <% if @comments.any? %>
-    <ul class="space-y-2">
-      <% @comments.each do |comment| %>
-        <li>
-          <span class="font-medium"><%= comment.user.username %>：</span>
-          <%= comment.content %>
-          <span class="text-gray-400 text-xs ml-2">（<%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>）</span>
-        </li>
+    <!-- 出欠ボタン -->
+    <% if user_signed_in? %>
+      <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+        <h3 class="text-xl font-extrabold text-gray-800 mb-4 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-600">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          あなたの出欠を回答
+        </h3>
+        
+        <div class="flex justify-center gap-4">
+          <%= form_with url: attend_event_path(@event), method: :post, remote: true, class: "inline-block" do |f| %>
+            <%= hidden_field_tag :notice, "" %>
+            <%= f.submit "◯ 参加", class: "bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+          <% end %>
+
+          <%= form_with url: pending_event_path(@event), method: :post, remote: true, class: "inline-block" do |f| %>
+            <%= hidden_field_tag :notice, "" %>
+            <%= f.submit "△ 未定", class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+          <% end %>
+
+          <%= form_with url: cancel_event_path(@event), method: :post, remote: true, class: "inline-block" do |f| %>
+            <%= hidden_field_tag :notice, "" %>
+            <%= f.submit "× 不参加", class: "bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <!-- 参加状況 -->
+    <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-indigo-500">
+      <h3 class="text-xl font-extrabold text-gray-800 mb-4 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+        </svg>
+        参加状況
+      </h3>
+
+      <% if @event.attendances.any? %>
+        <ul class="space-y-2">
+          <% @event.attendances.includes(:user).each do |attendance| %>
+            <li class="p-3 bg-gray-50 rounded-lg">
+              <span class="font-bold text-gray-800"><%= attendance.user.username %></span>
+              <span class="mx-2">:</span>
+              <% case attendance.status %>
+              <% when "attending" %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
+                  ◯ 参加
+                </span>
+              <% when "absent" %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-red-700">
+                  × 不参加
+                </span>
+              <% when "pending" %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
+                  △ 未定
+                </span>
+              <% else %>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gray-100 text-gray-600">
+                  未回答
+                </span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-600 text-center py-4">まだ回答がありません。</p>
       <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500">まだコメントがありません。</p>
-  <% end %>
-</div>
+    </section>
 
-  <!-- 編集・削除ボタン -->
-  <div class="flex justify-center items-center border-t pt-4">
-    <div class="flex space-x-3">
-      <%= link_to "編集", edit_event_path(@event),
-          class: "bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition" %>
+    <!-- コメント欄 -->
+    <!-- コメント欄 -->
+    <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-sky-500">
+      <h3 class="text-xl font-extrabold text-gray-800 mb-4 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-sky-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/>
+        </svg>
+        コメント
+      </h3>
 
-      <%= button_to "削除", event_path(@event), method: :delete,
-          data: { turbo_confirm: "本当に削除しますか？" },
-          class: "bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
+      <% if user_signed_in? %>
+        <%= form_with(model: [@event, Comment.new], local: true, class: "mb-6") do |f| %>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <%= f.text_field :content,
+                placeholder: "コメントを入力...",
+                class: "flex-1 border-2 border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition" %>
+            <%= f.submit "送信",
+                class: "bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition duration-150 transform hover:scale-[1.02] cursor-pointer" %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if @comments.any? %>
+        <ul class="space-y-3">
+          <% @comments.each do |comment| %>
+            <li class="p-4 bg-sky-50 rounded-xl border border-sky-200">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <span class="font-bold text-gray-800"><%= comment.user.username %></span>
+                  <p class="mt-1 text-gray-700"><%= comment.content %></p>
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-2">
+                <%= comment.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-600 text-center py-4">まだコメントがありません。</p>
+      <% end %>
+    </section>
+
+    <!-- 編集・削除ボタン -->
+    <% if user_signed_in? && @event.user == current_user %>
+      <div class="flex justify-center gap-4 mb-6">
+        <%= link_to edit_event_path(@event),
+            class: "flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02]" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+          </svg>
+          編集
+        <% end %>
+
+        <%= button_to event_path(@event), method: :delete,
+            data: { turbo_confirm: "本当に削除しますか?" },
+            class: "flex items-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02]" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+          </svg>
+          削除
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- 戻るリンク -->
+    <div class="flex justify-center">
+      <%= link_to events_path,
+          class: "flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 rounded-xl border-2 border-gray-300 shadow-md transition duration-150 text-gray-700 font-medium" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        試合一覧に戻る
+      <% end %>
     </div>
-  </div>
 
-  <div class="flex justify-center items-center mt-4">
-      <%= link_to "← 試合一覧に戻る", events_path, class: "text-indigo-600 hover:underline" %>
-</div>
+  </main>
 </div>

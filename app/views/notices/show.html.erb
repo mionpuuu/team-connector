@@ -1,35 +1,169 @@
-<div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-6 mt-10" data-controller="modal">
-  <h2 class="text-2xl font-extrabold mb-4 break-words"><%= @notice.title %></h2>
-  <div class="text-gray-700 leading-relaxed whitespace-pre-wrap break-words text-base md:text-lg mb-6">
-    <%= simple_format(@notice.content) %>
-  </div>
+<div class="min-h-screen bg-gray-100" data-controller="modal">
+  
+  <!-- ヘッダーエリア -->
+  <header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-amber-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+      <h1 class="text-2xl font-extrabold text-amber-600 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor"
+             class="w-7 h-7 mr-2 text-amber-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Team Connector
+      </h1>
 
-  <% if @notice.images.attached? %>
-    <div class="grid grid-cols-3 gap-3 mb-6">
-      <% @notice.images.each do |img| %>
-        <%= image_tag img.variant(resize_to_limit: [180, 180]),
-            class: "rounded-lg shadow-md cursor-pointer transition hover:scale-105",
-            data: { action: "click->modal#open", full_url: url_for(img) } %>
+      <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 hover:text-amber-600 transition duration-150 p-2 rounded-full bg-amber-50" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6 text-amber-600">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
       <% end %>
     </div>
-  <% end %>
-
-  <div data-modal-target="modal"
-         class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-         data-action="click->modal#close">
-      <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
+  </header>
+  
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- パンくずナビゲーション -->
+    <div class="mb-6 flex items-center text-sm text-gray-600">
+      <%= link_to root_path, class: "hover:text-amber-600 transition flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        ダッシュボード
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <%= link_to notices_path, class: "hover:text-amber-600 transition" do %>
+        お知らせ一覧
+      <% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-4 h-4 mx-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      <span class="text-gray-900 font-medium truncate"><%= truncate(@notice.title, length: 20) %></span>
     </div>
 
-  <div class="flex justify-center items-center border-t pt-4 space-x-3">
-    <%= link_to "編集", edit_notice_path(@notice),
-        class: "bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition" %>
+    <!-- お知らせ本文セクション -->
+    <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-amber-500">
+      <!-- タイトルとバッジ -->
+      <div class="mb-6">
+        <div class="flex items-start gap-3 mb-3">
+          <h2 class="text-3xl font-extrabold text-gray-900 break-words flex-1">
+            <%= @notice.title %>
+          </h2>
+          <% if @notice.pinned %>
+            <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                   class="w-3 h-3 fill-white">
+                <path d="M6 22V2.8a.8.8 0 0 1 1.17-.71l11.38 5.69a.8.8 0 0 1 0 1.44L6 15.5"/>
+              </svg>
+              重要
+            </span>
+          <% end %>
+        </div>
 
-    <%= button_to "削除", notice_path(@notice), method: :delete,
-        data: { turbo_confirm: "本当に削除しますか？" },
-        class: "bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition" %>
-  </div>
+        <!-- 投稿者と日時 -->
+        <div class="flex items-center gap-4 text-sm text-gray-600">
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1 text-amber-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+            <span class="font-medium"><%= @notice.user.username %></span>
+          </div>
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1 text-amber-600">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+            </svg>
+            <span><%= @notice.created_at.strftime("%Y年%-m月%-d日（#{['日','月','火','水','木','金','土'][@notice.created_at.wday]}）") %></span>
+          </div>
+        </div>
+      </div>
 
-  <div class="text-center mt-4">
-    <%= link_to "← ダッシュボードに戻る", root_path, class: "text-indigo-600 hover:text-indigo-800" %>
-  </div>
+      <!-- 本文 -->
+      <div class="border-t border-gray-200 pt-6">
+        <div class="text-gray-700 leading-relaxed whitespace-pre-wrap break-words text-base">
+          <%= simple_format(@notice.content) %>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画像セクション -->
+    <% if @notice.images.attached? %>
+      <section class="mb-6 p-6 bg-white rounded-2xl shadow-xl border-t-8 border-amber-500">
+        <h3 class="text-xl font-extrabold text-gray-800 mb-4 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-6 h-6 mr-2 text-amber-600">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+          </svg>
+          添付画像
+        </h3>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <% @notice.images.each do |img| %>
+            <%= image_tag img.variant(resize_to_limit: [300, 300]),
+                class: "rounded-xl shadow-md cursor-pointer transition hover:scale-105 w-full h-48 object-cover",
+                data: { action: "click->modal#open", modal_target: "image", full_url: url_for(img) } %>
+          <% end %>
+        </div>
+
+        <!-- モーダル本体 -->
+        <div data-modal-target="modal"
+             class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+             data-action="click->modal#close">
+          <img data-modal-target="modalImage" class="max-h-[80vh] rounded-lg shadow-lg" alt="preview">
+        </div>
+      </section>
+    <% end %>
+
+    <!-- 編集・削除ボタン -->
+    <% if user_signed_in? && @notice.user == current_user %>
+      <div class="flex justify-center gap-4 mb-6">
+        <%= link_to edit_notice_path(@notice),
+            class: "flex items-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02]" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+          </svg>
+          編集
+        <% end %>
+
+        <%= button_to notice_path(@notice), method: :delete,
+            data: { turbo_confirm: "本当に削除しますか?" },
+            class: "flex items-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-[1.02]" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+          </svg>
+          削除
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- お知らせ一覧に戻るリンク -->
+    <div class="flex justify-center">
+      <%= link_to notices_path,
+          class: "flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 rounded-xl border-2 border-gray-300 shadow-md transition duration-150 text-gray-700 font-medium" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        お知らせ一覧に戻る
+      <% end %>
+    </div>
+
+  </main>
 </div>
