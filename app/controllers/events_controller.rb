@@ -3,8 +3,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :attend, :cancel, :pending]
   
   def index
-    @events = Event.where("date >= ?", Date.today)
-                 .order(date: :asc)
+    @events = Event.upcoming
   end
 
   def new
@@ -24,7 +23,7 @@ class EventsController < ApplicationController
 
   def show
     @comments = @event.comments.includes(:user).order(created_at: :desc)
-    @attendance_counts = calculate_attendance_counts(@event)
+    @attendance_counts = @event.attendance_summary
   end
 
   def attend
@@ -33,7 +32,7 @@ class EventsController < ApplicationController
     @attendance.notice = params[:notice]
     
     if @attendance.save
-      @attendance_counts = calculate_attendance_counts(@event)
+      @attendance_counts = @event.attendance_summary
       
       render json: {
         html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
@@ -49,7 +48,7 @@ class EventsController < ApplicationController
     @attendance.notice = params[:notice]
     
     if @attendance.save
-      @attendance_counts = calculate_attendance_counts(@event)
+      @attendance_counts = @event.attendance_summary
       
       render json: {
         html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
@@ -65,7 +64,7 @@ class EventsController < ApplicationController
     @attendance.notice = params[:notice]
     
     if @attendance.save
-      @attendance_counts = calculate_attendance_counts(@event)
+      @attendance_counts = @event.attendance_summary
       
       render json: {
         html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
@@ -97,25 +96,13 @@ class EventsController < ApplicationController
   end
 
   def archive
-    @events_by_month = Event.where("date < ?", Date.today)
-                            .order(date: :desc)
-                            .group_by { |e| e.date.strftime("%Y年%m月") }
+    @events_by_month = Event.past.group_by { |e| e.date.strftime("%Y年%m月") }
   end
 
   private
 
   def set_event
     @event = Event.find(params[:id])
-  end
-
-  def calculate_attendance_counts(event)
-    {
-      attending: event.attendances.where(status: :attending).count,
-      pending: event.attendances.where(status: :pending).count,
-      absent: event.attendances.where(status: :absent).count,
-      total_members: User.count,
-      responded: event.attendances.count
-    }
   end
 
   def event_params
