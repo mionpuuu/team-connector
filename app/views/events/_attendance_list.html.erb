@@ -7,9 +7,76 @@
   参加状況
 </h3>
 
+<% if defined?(@attendance_counts) && @attendance_counts %>
+  <div class="mb-5 p-4 bg-indigo-50 rounded-xl border-2 border-indigo-200">
+    <h4 class="text-sm font-bold text-gray-700 mb-3">現在の状況</h4>
+    <div class="space-y-2">
+      <!-- 参加 -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="text-2xl mr-2">◯</span>
+          <span class="font-medium text-gray-700">参加</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex">
+            <% @attendance_counts[:attending].times do %>
+              <span class="w-3 h-3 bg-green-500 rounded-full mr-1"></span>
+            <% end %>
+          </div>
+          <span class="font-bold text-green-700"><%= @attendance_counts[:attending] %>人</span>
+        </div>
+      </div>
+
+      <!-- 未定 -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="text-2xl mr-2">△</span>
+          <span class="font-medium text-gray-700">未定</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex">
+            <% @attendance_counts[:pending].times do %>
+              <span class="w-3 h-3 bg-yellow-500 rounded-full mr-1"></span>
+            <% end %>
+          </div>
+          <span class="font-bold text-yellow-700"><%= @attendance_counts[:pending] %>人</span>
+        </div>
+      </div>
+
+      <!-- 不参加 -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="text-2xl mr-2">×</span>
+          <span class="font-medium text-gray-700">不参加</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex">
+            <% @attendance_counts[:absent].times do %>
+              <span class="w-3 h-3 bg-red-500 rounded-full mr-1"></span>
+            <% end %>
+          </div>
+          <span class="font-bold text-red-700"><%= @attendance_counts[:absent] %>人</span>
+        </div>
+      </div>
+
+    <!-- 合計 -->
+    <div class="mt-3 pt-3 border-t border-indigo-300">
+      <div class="flex items-center justify-between">
+        <span class="font-bold text-gray-800">合計</span>
+        <span class="font-bold text-indigo-700 text-lg">
+          <%= @attendance_counts[:responded] %> / <%= @attendance_counts[:total_members] %>人が回答
+        </span>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!-- 詳細リスト -->
 <% if event.attendances.any? %>
+  <h4 class="text-sm font-bold text-gray-700 mb-3 mt-5">メンバー別詳細</h4>
   <ul class="space-y-2">
     <% event.attendances.includes(:user).each do |attendance| %>
+      
       <li class="p-3 bg-gray-50 rounded-lg">
         <span class="font-bold text-gray-800"><%= attendance.user.username %></span>
         <span class="mx-2">:</span>

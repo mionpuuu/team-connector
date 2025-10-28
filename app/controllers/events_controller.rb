@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create,:attend, :cancel]
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :attend, :cancel]
+  before_action :authenticate_user!, only: [:new, :create, :attend, :cancel, :pending]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :attend, :cancel, :pending]
+  
   def index
     @events = Event.where("date >= ?", Date.today)
                  .order(date: :asc)
@@ -22,69 +23,67 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
     @comments = @event.comments.includes(:user).order(created_at: :desc)
+    @attendance_counts = calculate_attendance_counts(@event)
   end
 
   def attend
-  @event = Event.find(params[:id])
-  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  @attendance.status = :attending
-  @attendance.notice = params[:notice]
-  
-  if @attendance.save
-    render json: {
-      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
-    }
-  else
-    render json: { message: '参加登録に失敗しました。' }, status: :unprocessable_entity
+    @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+    @attendance.status = :attending
+    @attendance.notice = params[:notice]
+    
+    if @attendance.save
+      @attendance_counts = calculate_attendance_counts(@event)
+      
+      render json: {
+        html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
+      }
+    else
+      render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
+    end
   end
-end
 
-def cancel
-  @event = Event.find(params[:id])
-  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  @attendance.status = :absent
-  @attendance.notice = params[:notice]
-  
-  if @attendance.save
-    render json: {
-      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
-    }
-  else
-    render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
+  def cancel
+    @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+    @attendance.status = :absent
+    @attendance.notice = params[:notice]
+    
+    if @attendance.save
+      @attendance_counts = calculate_attendance_counts(@event)
+      
+      render json: {
+        html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
+      }
+    else
+      render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
+    end
   end
-end
 
-def pending
-  @event = Event.find(params[:id])
-  @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
-  @attendance.status = :pending
-  @attendance.notice = params[:notice]
-  
-  if @attendance.save
-    render json: {
-      html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html]),
-    }
-  else
-    render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
+  def pending
+    @attendance = Attendance.find_or_initialize_by(user: current_user, event: @event)
+    @attendance.status = :pending
+    @attendance.notice = params[:notice]
+    
+    if @attendance.save
+      @attendance_counts = calculate_attendance_counts(@event)
+      
+      render json: {
+        html: render_to_string(partial: 'attendance_list', locals: { event: @event }, formats: [:html])
+      }
+    else
+      render json: { message: '更新に失敗しました。' }, status: :unprocessable_entity
+    end
   end
-end
-
-
 
   def edit
-    @event = Event.find(params[:id])
   end
 
   def update
-    @event = Event.find(params[:id])
-
     if params[:event][:images]
-    @event.images.attach(params[:event][:images])
+      @event.images.attach(params[:event][:images])
     end
 
-  if @event.update(event_params.except(:images))
+    if @event.update(event_params.except(:images))
       redirect_to root_path, notice: 'イベントを更新しました'
     else
       flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
@@ -93,22 +92,30 @@ end
   end
 
   def destroy
-    @event = Event.find(params[:id])
     @event.destroy
     redirect_to root_path, notice: 'イベントを削除しました'
   end
 
   def archive
-  @events_by_month = Event.where("date < ?", Date.today)
-                          .order(date: :desc)
-                          .group_by { |e| e.date.strftime("%Y年%m月") }
+    @events_by_month = Event.where("date < ?", Date.today)
+                            .order(date: :desc)
+                            .group_by { |e| e.date.strftime("%Y年%m月") }
   end
-
 
   private
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def calculate_attendance_counts(event)
+    {
+      attending: event.attendances.where(status: :attending).count,
+      pending: event.attendances.where(status: :pending).count,
+      absent: event.attendances.where(status: :absent).count,
+      total_members: User.count,
+      responded: event.attendances.count
+    }
   end
 
   def event_params
