@@ -1,0 +1,45 @@
+<%
+  # デフォルトはindigo(試合用)
+  color ||= 'indigo'
+  
+  # 色ごとのクラスを定義
+  color_classes = {
+    'indigo' => {
+      border: 'border-indigo-500',
+      text: 'text-indigo-600',
+      icon_bg: 'bg-indigo-50',
+      hover: 'hover:text-indigo-600'
+    },
+    'amber' => {
+      border: 'border-amber-500',
+      text: 'text-amber-600',
+      icon_bg: 'bg-amber-50',
+      hover: 'hover:text-amber-600'
+    }
+  }
+  
+  colors = color_classes[color]
+%>
+
+<header class="bg-white shadow-lg sticky top-0 z-10 border-b-4 <%= colors[:border] %>">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-x-4">
+    <h1 class="text-2xl font-extrabold <%= colors[:text] %> flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor"
+           class="w-7 h-7 mr-2 <%= colors[:text] %>">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+      Team Connector
+    </h1>
+
+    <%= link_to edit_user_registration_path, class: "ml-4 text-gray-600 #{colors[:hover]} transition duration-150 p-2 rounded-full #{colors[:icon_bg]}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="1.5" stroke="currentColor"
+           class="w-6 h-6 <%= colors[:text] %>">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+    <% end %>
+  </div>
+</header>
