@@ -29,6 +29,12 @@
       </h2>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+
+      <% if flash[:alert] %>
+         <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg mb-4">
+            <p class="text-sm text-red-700"><%= flash[:alert] %></p>
+         </div>
+      <% end %>
         
         <!-- メールアドレス -->
         <div>
