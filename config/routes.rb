@@ -16,9 +16,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :notices do
-    collection do
-      get "archive"
-    end
-  end
+  resources :notices
 end

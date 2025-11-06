@@ -5,13 +5,6 @@ class NoticesController < ApplicationController
                    .order(created_at: :desc)
   end
 
-  def archive
-      @notices_by_month = Notice
-                        .where("created_at < ?", 3.months.ago.beginning_of_month)
-                        .order(created_at: :desc)
-                        .group_by { |n| n.created_at.strftime("%Y年%m月") }
-  end
-
   def new
     @notice = Notice.new
   end
