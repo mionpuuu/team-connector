@@ -78,17 +78,14 @@ class EventsController < ApplicationController
   end
 
   def update
-    if params[:event][:images]
-      @event.images.attach(params[:event][:images])
-    end
-
-    if @event.update(event_params.except(:images))
-      redirect_to root_path, notice: 'イベントを更新しました'
-    else
-      flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
-      render :edit, status: :unprocessable_entity
-    end
+  if @event.update(event_params)
+    redirect_to root_path, notice: 'イベントを更新しました'
+  else
+    flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
+    render :edit, status: :unprocessable_entity
   end
+end
+
 
   def destroy
     @event.destroy
